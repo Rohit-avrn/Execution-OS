@@ -1,0 +1,41 @@
+type User @table {
+  username: String!
+  email: String!
+  createdAt: Timestamp!
+  displayName: String
+  photoUrl: String
+  lastLogin: Timestamp
+}
+
+type Goal @table {
+  user: User!
+  name: String!
+  description: String!
+  targetDate: Date!
+  createdAt: Timestamp!
+  status: String
+}
+
+type Mission @table {
+  user: User!
+  goal: Goal!
+  description: String!
+  dueDate: Date!
+  isComplete: Boolean!
+  createdAt: Timestamp!
+  aiGenerated: Boolean
+  completedAt: Timestamp
+}
+
+type Streak @table {
+  user: User!
+  currentLength: Int!
+  longestLength: Int!
+  lastMissionCompletionDate: Date!
+}
+
+type LeaderboardEntry @table {
+  user: User!
+  score: Int!
+  lastUpdated: Timestamp!
+}

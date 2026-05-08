@@ -1,0 +1,43 @@
+query ListUserGoals($userId: UUID!) @auth(level: USER, insecureReason: "This operation retrieves a specific user's goals, which is safe to expose to any logged-in user with a valid userId.") {
+  goals(where: { userId: { eq: $userId } }, orderBy: [{ createdAt: DESC }]) {
+    id
+    name
+    description
+    targetDate
+    status
+  }
+}
+
+mutation CreateNewUserGoal($name: String!, $description: String!, $targetDate: Date!) @auth(level: USER, insecureReason: "This operation allows any logged-in user to create a goal for themselves.") {
+  goal_insert(
+    data: {
+      name: $name,
+      description: $description,
+      targetDate: $targetDate,
+      userId_expr: "auth.uid",
+      createdAt_expr: "request.time"
+    }
+  ) {
+    id
+  }
+}
+
+query GetLeaderboardEntries @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public as it only displays general leaderboard information.") {
+  leaderboardEntries(orderBy: [{ score: DESC }], limit: 10) {
+    user {
+      displayName
+    }
+    score
+    lastUpdated
+  }
+}
+
+mutation UpdateUserDisplayName($newDisplayName: String!) @auth(level: USER, insecureReason: "This operation allows a logged-in user to update their own display name.") {
+  user_update(
+    key: { id_expr: "auth.uid" },
+    data: { displayName: $newDisplayName }
+  ) {
+    id
+    displayName
+  }
+}
