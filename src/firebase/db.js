@@ -1,18 +1,11 @@
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-import { app } from "./config";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "./config";
 
-const db = getFirestore(app);
-
-// save mission
-export async function saveMission(userId, mission) {
-  await setDoc(doc(db, "missions", userId), {
-    mission,
-    updatedAt: new Date()
-  });
+export async function saveUserData(uid, data) {
+  await setDoc(doc(db, "users", uid), data);
 }
 
-// load mission
-export async function getMission(userId) {
-  const snap = await getDoc(doc(db, "missions", userId));
+export async function getUserData(uid) {
+  const snap = await getDoc(doc(db, "users", uid));
   return snap.exists() ? snap.data() : null;
 }
