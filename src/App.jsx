@@ -1,7 +1,6 @@
+import js from "@eslint/js";
+import Login from "./pages/Login";
+
 export default function App() {
-  return (
-    <div className="bg-black text-white h-screen flex items-center justify-center text-5xl">
-      Execution OS
-    </div>
-  )
+  return <Login />
 }
